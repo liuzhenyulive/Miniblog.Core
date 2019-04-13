@@ -16,8 +16,8 @@ namespace Miniblog.Core.Services
 {
     public class FileBlogService : IBlogService
     {
-        private const string POSTS = "Posts";
-        private const string FILES = "files";
+        private const string Posts = "Posts";
+        private const string Files = "files";
 
         private readonly List<Post> _cache = new List<Post>();
         private readonly IHttpContextAccessor _contextAccessor;
@@ -25,7 +25,7 @@ namespace Miniblog.Core.Services
 
         public FileBlogService(IHostingEnvironment env, IHttpContextAccessor contextAccessor)
         {
-            _folder = Path.Combine(env.WebRootPath, POSTS);
+            _folder = Path.Combine(env.WebRootPath, Posts);
             _contextAccessor = contextAccessor;
 
             Initialize();
@@ -128,7 +128,7 @@ namespace Miniblog.Core.Services
                         new XElement("date", FormatDateTime(comment.PubDate)),
                         new XElement("content", comment.Content),
                         new XAttribute("isAdmin", comment.IsAdmin),
-                        new XAttribute("id", comment.ID)
+                        new XAttribute("id", comment.Id)
                     ));
             }
 
@@ -170,7 +170,7 @@ namespace Miniblog.Core.Services
 
             string fileNameWithSuffix = $"{name}_{suffix}{ext}";
 
-            string absolute = Path.Combine(_folder, FILES, fileNameWithSuffix);
+            string absolute = Path.Combine(_folder, Files, fileNameWithSuffix);
             string dir = Path.GetDirectoryName(absolute);
 
             Directory.CreateDirectory(dir);
@@ -179,7 +179,7 @@ namespace Miniblog.Core.Services
                 await writer.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
             }
 
-            return $"/{POSTS}/{FILES}/{fileNameWithSuffix}";
+            return $"/{Posts}/{Files}/{fileNameWithSuffix}";
         }
 
         private string GetFilePath(Post post)
@@ -248,7 +248,7 @@ namespace Miniblog.Core.Services
             {
                 Comment comment = new Comment()
                 {
-                    ID = ReadAttribute(node, "id"),
+                    Id = ReadAttribute(node, "id"),
                     Author = ReadValue(node, "author"),
                     Email = ReadValue(node, "email"),
                     IsAdmin = bool.Parse(ReadAttribute(node, "isAdmin", "false")),
@@ -288,11 +288,11 @@ namespace Miniblog.Core.Services
         
         private static string FormatDateTime(DateTime dateTime)
         {
-            const string UTC = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'";
+            const string utc = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'";
 
             return dateTime.Kind == DateTimeKind.Utc
-                ? dateTime.ToString(UTC)
-                : dateTime.ToUniversalTime().ToString(UTC);
+                ? dateTime.ToString(utc)
+                : dateTime.ToUniversalTime().ToString(utc);
         }
 
         protected void SortCache()

@@ -207,7 +207,7 @@ namespace Miniblog.Core.Controllers
                 await _blog.SavePost(post);
             }
 
-            return Redirect(post.GetEncodedLink() + "#" + comment.ID);
+            return Redirect(post.GetEncodedLink() + "#" + comment.Id);
         }
 
         [Route("/blog/comment/{postId}/{commentId}")]
@@ -221,7 +221,7 @@ namespace Miniblog.Core.Controllers
                 return NotFound();
             }
 
-            var comment = post.Comments.FirstOrDefault(c => c.ID.Equals(commentId, StringComparison.OrdinalIgnoreCase));
+            var comment = post.Comments.FirstOrDefault(c => c.Id.Equals(commentId, StringComparison.OrdinalIgnoreCase));
 
             if (comment == null)
             {

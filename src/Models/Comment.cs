@@ -7,7 +7,7 @@ namespace Miniblog.Core.Models
     public class Comment
     {
         [Required]
-        public string ID { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
         public string Author { get; set; }
